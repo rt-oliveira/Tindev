@@ -9,4 +9,9 @@ router.get("/",function(req,res){                           // Método que cria 
 
 }); 
 
+router.post("/devs",function(req,res){  // Método que criará algo dentro da API REST.
+    console.log(req.body);
+    return res.json(req.body);
+});
+
 module.exports=router;
