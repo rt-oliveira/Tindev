@@ -1,11 +1,5 @@
 const express=require('express');   // "Importou" o módulo express
+const router=require("./rotas");    // "Importou" o arquivo 'rotas.js' que está na mesma pasta
 const servidor=express();           // Está criando um servidor
-
-servidor.get("/",function(req,res){                         // Método que cria uma resposta para uma 
-    return res.json({mensagem: `Olá ${req.query.name}`});   // determinada rota (a rota raiz, no caso).
-    // res.json faz com que um objeto seja retornado como resposta, em formato JSON.
-    // req.query tem os parâmetros passados na URL, na requisição.
-    // Exemplo: req.query.name
-
-});                                 
+servidor.use(router);               // A configuração feita em 'rotas' será adicionada a config do servidor.
 servidor.listen(9999);              // Passará a 'escutar' requisições nesta porta
