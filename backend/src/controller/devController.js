@@ -16,5 +16,17 @@ module.exports={
           avatar:avatar_url,
         });
       return res.json(dev);
-  }  
+  },
+  async listar(req,res){
+    const {usuario}=req.headers;
+    const usuarioLogado=await Dev.findById(usuario);
+    const usuarios=await Dev.find({
+      $and: [   // Só serão mostrados os usuário que passarem por todas as condições dadas dentro do AND.
+        { _id: {$ne: usuario} }, // Vai filtrar o próprio usuário logado. $ne significa "diferente de".
+        { _id: {$nin: usuarioLogado.likes}}, // Vai filtrar os desenvolvedores que ele já deu like.
+        { _id: {$nin: usuarioLogado.dislikes}} // Vai filtrar os desenvolvedores que ele já deu dislike.
+      ],
+    });
+    return res.json(usuarios);
+  }
 };
