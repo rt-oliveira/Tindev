@@ -1,12 +1,17 @@
 import React,{useState} from 'react';
 import './login.css';
-import logo from '../imagens/logo.svg';  // Está importando o logo do Tindev.
+import logo from '../imagens/logo.svg'; // Está importando o logo do Tindev.
+import api from '../servicos/api';  
 
-export default function Login(){
+export default function Login({history}){
     const [usuario,setUsuario]=useState('');
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
-        console.log(usuario);
+        const resposta=await api.post('/devs',{
+            username:usuario
+        });
+        const {_id}=resposta.data;
+        history.push(`/dev/${_id}`);
     }
 
     return (
