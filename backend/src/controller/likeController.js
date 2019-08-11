@@ -2,6 +2,7 @@ const Dev=require("../model/dev");
 
 module.exports={
     async armazenar(req,res){
+        //console.log(req.io,req.usuariosConectados);
 
         const {IdDev}=req.params;
         const {usuario}=req.headers;
@@ -14,7 +15,16 @@ module.exports={
         }
 
         if(usuarioASeDarLike.likes.includes(usuarioLogado._id)){
-            console.log("Deu match!");
+            const SocketLogado=req.usuariosConectados[usuario];
+            const SocketTarget=req.usuariosConectados[IdDev];
+
+            if(SocketLogado){
+                req.io.to(SocketLogado).emit('match',usuarioASeDarLike);
+            }
+
+            if(SocketTarget){
+                req.io.to(SocketTarget).emit('match',usuarioLogado);
+            }
         }
 
         usuarioLogado.likes.push(usuarioASeDarLike._id);
